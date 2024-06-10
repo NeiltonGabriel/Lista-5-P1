@@ -1,0 +1,108 @@
+#include <stdio.h>
+
+int somar(int vetor[], int posicao, int final, int resultado)
+{
+    if (posicao == final) return resultado;
+    else
+    {
+        if (vetor[posicao] == vetor[posicao - 1]) return somar(vetor, posicao + 1, final, resultado);
+        else
+        {
+            resultado += vetor[posicao];
+            return somar(vetor, posicao + 1, final, resultado);
+        }
+    }
+}
+
+void bolha(int vetor[], int posicao, int tamanho)
+{
+    if (posicao == (tamanho - 1)) return;
+    else
+    {
+        if (vetor[posicao] > vetor[posicao + 1])
+        {
+            int caixa = vetor[posicao];
+            vetor[posicao] = vetor[posicao + 1];
+            vetor[posicao + 1] = caixa;
+        }
+        bolha(vetor, posicao + 1, tamanho);
+    }
+}
+
+void ordenar(int vetor[], int posicao, int tamanho)
+{
+
+    if (posicao == (tamanho - 1)) return;
+    else
+    {
+        bolha(vetor, posicao, tamanho);
+        ordenar(vetor, 0, tamanho - 1);
+    }
+}
+
+void atribuir(int numeros_gerais[], int numeros_par[], int numeros_impar[], int posicao_geral, int final, int posicao_par, int posicao_impar)
+{
+    if (posicao_geral == final) return;
+    else
+    {
+        if ((numeros_gerais[posicao_geral] % 2) == 0)
+        {
+            numeros_par[posicao_par] = numeros_gerais[posicao_geral];
+            atribuir(numeros_gerais, numeros_par, numeros_impar, posicao_geral + 1, final, posicao_par + 1, posicao_impar);
+        }
+        else
+        {
+            numeros_impar[posicao_impar] = numeros_gerais[posicao_geral];
+            atribuir(numeros_gerais, numeros_par, numeros_impar, posicao_geral + 1, final, posicao_par, posicao_impar + 1);
+        }
+    }
+}
+int paridade(int vetor[], int posicao, int final, int par)
+{
+    if (posicao == final) return par; //retornar quantos numeros pares tem no vetor
+    else
+    {
+        if ((vetor[posicao] % 2) == 0) par++;
+        return paridade(vetor, posicao + 1, final, par);
+    }
+}
+
+void ler_vetor(int vetor[], int posicao, int final)
+{
+    if (posicao == final) return;
+
+    scanf("%d", &vetor[posicao]);
+    ler_vetor(vetor, posicao + 1, final);
+}
+
+int main()
+{
+    int tamanho, pares, impares, soma_pares, soma_impares;
+    
+    scanf("%d", &tamanho);
+
+    int numeros[tamanho];
+
+    ler_vetor(numeros, 0, tamanho);
+
+    pares = paridade(numeros, 0, tamanho, 0);
+    impares = tamanho - pares;
+
+    int numeros_pares[pares];
+    int numeros_impares[impares];
+
+    atribuir(numeros, numeros_pares, numeros_impares, 0, tamanho, 0, 0);
+    ordenar(numeros_pares, 0, pares);
+    ordenar(numeros_impares, 0, impares);
+
+    soma_pares = somar(numeros_pares, 0, pares, 0);
+    soma_impares = somar(numeros_impares, 0, impares, 0);
+
+    printf("%d\n", pares);
+    printf("%d\n", impares);
+
+    if (soma_pares > soma_impares) printf("%d\n", soma_pares);
+    if (soma_pares < soma_impares) printf("%d\n", soma_impares);
+
+    return 0;
+}
