@@ -1,0 +1,111 @@
+#include <stdio.h>
+
+void imprimir(double vetor[], int posicao, int final)
+{
+    if (posicao == (final - 1))
+    {
+        printf("%.2lf\n", vetor[posicao]);
+        return;
+    }
+    else
+    {
+        printf("%.2lf ", vetor[posicao]);
+        imprimir(vetor, posicao + 1, final);
+    } 
+}
+
+void atribuir(double notas_e[], double notas_c[], double notas[], char letras[], int posicao, int final, int posicao_ec, int posicao_cc)
+{
+    if (posicao == final) return;
+    else
+    {
+        if (letras[posicao] == 'e')
+        {
+            notas_e[posicao_ec] = notas[posicao];
+            atribuir(notas_e, notas_c, notas, letras, posicao + 1, final, posicao_ec + 1, posicao_cc);
+        }
+        else
+        {
+            notas_c[posicao_cc] = notas[posicao];
+            atribuir(notas_e, notas_c, notas, letras, posicao + 1, final, posicao_ec, posicao_cc + 1);
+        }
+    }
+}
+
+int apareceu(char a[], int posicao, int fim, char valor, int vezes)
+{
+  if (posicao < fim)
+  {
+    if (a[posicao] == valor)
+    {
+      vezes++;
+      return apareceu(a, posicao + 1, fim, valor, vezes);
+    }
+    else return apareceu(a, posicao + 1, fim, valor, vezes);
+  }
+  else return vezes;
+}
+
+void bolha(double vetor[], int posicao, int tamanho)
+{
+    if (posicao == (tamanho - 1)) return;
+    else
+    {
+        if (vetor[posicao] < vetor[posicao + 1])
+        {
+            double caixa = vetor[posicao];
+            vetor[posicao] = vetor[posicao + 1];
+            vetor[posicao + 1] = caixa;
+        }
+        bolha(vetor, posicao + 1, tamanho);
+    }
+}
+
+void ordernar(double vetor[], int posicao, int tamanho)
+{
+
+    if (posicao == (tamanho - 1)) return;
+    else
+    {
+        bolha(vetor, posicao, tamanho);
+        ordernar(vetor, 0, tamanho - 1);
+    }
+}
+
+void ler_vetor(double vetor_notas[], char vetor_letras[], int posicao, int final)
+{
+    if (posicao == final) return;
+    else
+    {
+        scanf("%lf %c", &vetor_notas[posicao], &vetor_letras[posicao]);
+
+        ler_vetor(vetor_notas, vetor_letras, posicao + 1, final);
+    }
+}
+
+int main()
+{
+    int quantidade_e, quantidade_c;
+    double notas_embaralhadas[10];
+    char letras_embaralhadas[10];
+
+    ler_vetor(notas_embaralhadas, letras_embaralhadas, 0, 10);
+
+    quantidade_c = apareceu(letras_embaralhadas, 0, 10, 'c', 0); //diz quantos 'c' tem no vetor
+    quantidade_e = 10 - quantidade_c; //diz quantos 'e' tem no vetor
+
+    double notas_ec[quantidade_e]; //cria o vetor com o tamanho certo
+    double notas_cc[quantidade_c]; //cria o vetor com o tamanho certo
+
+    atribuir(notas_ec, notas_cc, notas_embaralhadas, letras_embaralhadas, 0, 10, 0, 0);
+
+    ordernar(notas_ec, 0, quantidade_e);
+    ordernar(notas_cc, 0, quantidade_c);
+
+    printf("EC: ");
+    imprimir(notas_ec, 0, quantidade_e);
+    printf("CC: ");
+    imprimir(notas_cc, 0, quantidade_c);
+
+    return 0;
+}
