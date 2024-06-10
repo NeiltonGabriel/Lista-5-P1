@@ -1,0 +1,39 @@
+#include <stdio.h>
+#define TAMANHO 10
+void ler_vetor(int vetor[], int posicao, int fim);
+int apareceu(int a[], int posicao, int fim, int valor, int vezes);
+
+int main()
+{
+    int vetor[TAMANHO];
+    int quero, vezes;
+
+    ler_vetor(vetor, 0, TAMANHO);
+    quero = vetor[TAMANHO - 1];
+    vezes = apareceu(vetor, 0, TAMANHO, quero, 0);
+    printf("O numero %d apareceu %d vezes\n", quero, vezes);
+    return 0;
+}
+
+void ler_vetor(int vetor[], int posicao, int fim)
+{
+    if (posicao == fim) return;
+
+    scanf("%d", &vetor[posicao]);
+
+    ler_vetor(vetor, posicao + 1, fim);
+}
+
+int apareceu(int a[], int posicao, int fim, int valor, int vezes)
+{
+  if (posicao < fim)
+  {
+    if (a[posicao] == valor)
+    {
+      vezes = vezes + 1;
+      return apareceu(a, posicao + 1, fim, valor, vezes);
+    }
+    else return apareceu(a, posicao + 1, fim, valor, vezes);
+  }
+  else return vezes;
+}
