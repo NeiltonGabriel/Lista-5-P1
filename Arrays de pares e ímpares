@@ -1,0 +1,76 @@
+#include <stdio.h>
+
+void imprimir(int vetor[], int posicao, int final)
+{ //4, -4, 2, 8, 2, 1, 3, 3, 5, -7
+    if (posicao == final) return;
+    else
+    {
+        if ((vetor[posicao] % 2) == 0)//imprimindo os pares
+        {
+            printf("par[%d] = %d\n", posicao, vetor[posicao]);
+            imprimir(vetor, posicao + 1, final);
+        }
+        else//imprimindo os impares
+        {
+            printf("impar[%d] = %d\n", posicao, vetor[posicao]);
+            imprimir(vetor, posicao + 1, final);
+        }
+    }
+}
+
+void atribuicao(int numeros_baguncados[], int numeros_impares[], int numeros_pares[], int posicao, int posicao_impar, int posicao_par, int final)
+{   
+    
+    if (posicao == final)
+    {
+        imprimir(numeros_impares, 0, posicao_impar);
+        imprimir(numeros_pares, 0, posicao_par);
+        return;
+    }
+    else
+    {
+        if ((numeros_baguncados[posicao] % 2) == 0)
+        {
+            numeros_pares[posicao_par] = numeros_baguncados[posicao];
+            if (posicao_par == 4)
+            {
+                imprimir(numeros_pares, 0, 5);
+                posicao_par = 0;
+                return atribuicao(numeros_baguncados, numeros_impares, numeros_pares, posicao + 1, posicao_impar, posicao_par, final);
+            }
+            return atribuicao(numeros_baguncados, numeros_impares, numeros_pares, posicao + 1, posicao_impar, posicao_par + 1, final);
+            
+        }
+        else //o numero eh impar
+        {
+            numeros_impares[posicao_impar] = numeros_baguncados[posicao];
+            if (posicao_impar == 4)
+            {
+                imprimir(numeros_impares, 0, 5);
+                posicao_impar = 0;
+                return atribuicao(numeros_baguncados, numeros_impares, numeros_pares, posicao + 1, posicao_impar, posicao_par, final);
+            }
+            return atribuicao(numeros_baguncados, numeros_impares, numeros_pares, posicao + 1, posicao_impar + 1, posicao_par, final);
+        }
+    }
+}
+
+void ler_vetor(int vetor[], int posicao, int final)
+{
+    if (posicao == final) return ;
+
+    scanf("%d", &vetor[posicao]); //1, 3, 4, -4, 2, 3, 8, 2, 5, -7, 54, 76, 789, 23, 98
+
+    ler_vetor(vetor, posicao + 1, final);
+}
+
+int main()
+{
+    int numeros[15], impares[6], pares[6];
+
+    ler_vetor(numeros, 0, 15);
+    
+    atribuicao(numeros, impares, pares, 0, 0, 0, 15);
+
+    return 0;
+}
