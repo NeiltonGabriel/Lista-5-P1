@@ -1,0 +1,52 @@
+#include <stdio.h>
+void ler_vetor(double vetor[], int posicao, int final);
+void ordenar_decrescente(double vetor[], int posicao, int tamanho);
+void bolha(double vetor[], int posicao, int tamanho);
+
+int main()
+{
+    double alturas[4];
+
+    ler_vetor(alturas, 0, 4);
+    ordenar_decrescente(alturas, 0, 4);
+
+    printf("%.2lf\n", alturas[3]);
+    printf("%.2lf\n", alturas[1]);
+    printf("%.2lf\n", alturas[0]);
+    printf("%.2lf\n", alturas[2]);
+}
+
+void ler_vetor(double vetor[], int posicao, int final)
+{
+    if (posicao == final) return;
+
+    scanf("%lf", &vetor[posicao]);
+
+    ler_vetor(vetor, posicao + 1, final);
+}
+
+void ordenar_decrescente(double vetor[], int posicao, int tamanho)
+{
+
+    if (posicao == (tamanho - 1)) return;
+    else
+    {
+        bolha(vetor, posicao, tamanho);
+        ordenar_decrescente(vetor, 0, tamanho - 1);
+    }
+}
+
+void bolha(double vetor[], int posicao, int tamanho)
+{
+    if (posicao == (tamanho - 1)) return;
+    else
+    {
+        if (vetor[posicao] < vetor[posicao + 1])
+        {
+            double caixa = vetor[posicao];
+            vetor[posicao] = vetor[posicao + 1];
+            vetor[posicao + 1] = caixa;
+        }
+        bolha(vetor, posicao + 1, tamanho);
+    }
+}
