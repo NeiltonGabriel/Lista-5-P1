@@ -1,0 +1,40 @@
+#include <stdio.h>
+void ler(int a[], int contador, int final);
+int apareceu(int a[], int contador, int final, int valor, int apareceu);
+
+int main()
+{
+  int a[10];
+  int numero, vezes;
+  
+  ler(a, 0, 10);
+  scanf("%d", &numero);
+
+  vezes = apareceu(a, 0, 10, numero, 0);
+  printf("%d\n", vezes);
+  return 0;
+}
+
+void ler(int a[], int contador, int final)
+{
+  if (contador < final)
+  {
+    scanf("%d", &a[contador]);
+    ler(a, contador + 1, final);
+  }
+  else return;
+}
+
+int apareceu(int a[], int contador, int fim, int valor, int vezes)
+{
+  if (contador < fim)
+  {
+    if (a[contador] == valor)
+    {
+      vezes = vezes + 1;
+      return apareceu(a, contador + 1, fim, valor, vezes);
+    }
+    else return apareceu(a, contador + 1, fim, valor, vezes);
+  }
+  else return vezes;
+}
