@@ -1,0 +1,74 @@
+#include <stdio.h>
+void ler_vetor(int vetor[], int posicao, int final);
+void atribuir(int valor_do_dado[], int bonus[], int buffado[], int posicao, int final);
+void ordenar_decrescente(int vetor[], int posicao, int tamanho);
+void bolha(int vetor[], int posicao, int tamanho);
+
+int main()
+{
+    int floresta, passaram = 0;
+
+    scanf("%d", &floresta);
+
+    int dados[5];
+    int bonus[5];
+    int buffado[5];
+    
+    ler_vetor(dados, 0, 5);
+    ler_vetor(bonus, 0, 5);
+    atribuir(dados, bonus, buffado, 0, 5);
+    ordenar_decrescente(buffado, 0, 5);
+
+    if (buffado[0] >= floresta) passaram++;
+    if (buffado[1] >= floresta) passaram++;
+    if (buffado[2] >= floresta) passaram++;
+    if (buffado[3] >= floresta) passaram++;
+    if (buffado[4] >= floresta) passaram++;
+
+    printf("Jogadores que passaram: %d\n", passaram);
+    printf("Maior valor: %d\n", buffado[0]);
+    printf("Menor valor: %d\n", buffado[4]);
+}
+
+void ler_vetor(int vetor[], int posicao, int final)
+{
+    if (posicao == final) return;
+
+    scanf("%d", &vetor[posicao]);
+
+    ler_vetor(vetor, posicao + 1, final);
+}
+
+void atribuir(int valor_do_dado[], int bonus[], int buffado[], int posicao, int final)
+{   
+    if (posicao == final) return;
+
+    buffado[posicao] = valor_do_dado[posicao] + bonus[posicao];
+    atribuir(valor_do_dado, bonus, buffado, posicao + 1, final);
+}
+
+void ordenar_decrescente(int vetor[], int posicao, int tamanho)
+{
+
+    if (posicao == (tamanho - 1)) return;
+    else
+    {
+        bolha(vetor, posicao, tamanho);
+        ordenar_decrescente(vetor, 0, tamanho - 1);
+    }
+}
+
+void bolha(int vetor[], int posicao, int tamanho)
+{
+    if (posicao == (tamanho - 1)) return;
+    else
+    {
+        if (vetor[posicao] < vetor[posicao + 1])
+        {
+            int caixa = vetor[posicao];
+            vetor[posicao] = vetor[posicao + 1];
+            vetor[posicao + 1] = caixa;
+        }
+        bolha(vetor, posicao + 1, tamanho);
+    }
+}
